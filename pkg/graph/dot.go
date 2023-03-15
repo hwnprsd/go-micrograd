@@ -25,22 +25,22 @@ func Trace(root *engine.Value) (NodeSet, EdgeSet) {
 		// if val is not in nodes
 		if !nodes[val] {
 			nodes[val] = true
-			if val.Parent1 != nil {
+			if val.Child1 != nil {
 				edge := &Edge{
-					Child: val.Parent1,
+					Child: val.Child1,
 					Value: val,
 				}
 				edges[edge] = true
-				build(val.Parent1)
+				build(val.Child1)
 			}
 
-			if val.Parent2 != nil {
+			if val.Child2 != nil {
 				edge := &Edge{
-					Child: val.Parent2,
+					Child: val.Child2,
 					Value: val,
 				}
 				edges[edge] = true
-				build(val.Parent2)
+				build(val.Child2)
 			}
 		}
 	}

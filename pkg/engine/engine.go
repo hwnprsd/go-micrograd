@@ -28,7 +28,8 @@ func (n *Neuron) Call(x []*Value) *Value {
 	for i, w := range n.Weights {
 		sum = sum.Add(w.Mul(x[i]))
 	}
-	return sum
+	act := sum.Tanh()
+	return act
 }
 
 // ---

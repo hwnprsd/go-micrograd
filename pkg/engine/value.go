@@ -17,7 +17,8 @@ type Value struct {
 
 func (v *Value) String() string {
 	// return fmt.Sprintf("Value { data = %f | grad = %f | parent1 = %s | parent2 = %s }", v.Data, v.Grad, v.Parent1, v.Parent2)
-	return fmt.Sprintf("{ ptr = %p | data = %f | p1 = %p | p2 = %p }", v, v.Data, v.Child1, v.Child2)
+	// return fmt.Sprintf("{ ptr = %p | data = %f | p1 = %p | p2 = %p }", v, v.Data, v.Child1, v.Child2)
+	return fmt.Sprintf("{ D = %f }", v.Data)
 }
 
 func (v *Value) Add(other *Value) *Value {
@@ -94,7 +95,7 @@ func (v *Value) Backward() {
 				buildDag(node.Child1)
 			}
 			if node.Child2 != nil {
-				buildDag(node.Child1)
+				buildDag(node.Child2)
 			}
 			topoList = append(topoList, node)
 		}

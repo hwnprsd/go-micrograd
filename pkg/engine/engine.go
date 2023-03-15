@@ -3,6 +3,7 @@ package engine
 import (
 	"log"
 	"math/rand"
+	"time"
 )
 
 type Neuron struct {
@@ -11,6 +12,7 @@ type Neuron struct {
 }
 
 func NewNeuron(numberInputs int) *Neuron {
+	rand.Seed(time.Now().Unix())
 	weights := []*Value{}
 	for i := 0; i < numberInputs; i++ {
 		weights = append(weights, &Value{Data: rand.Float64()})
@@ -32,6 +34,13 @@ func (n *Neuron) Call(x []*Value) *Value {
 	return act
 }
 
+func (n *Neuron) GetParameters() []*Value {
+	arr := []*Value{}
+	arr = append(arr, n.Weights...)
+	arr = append(arr, n.Bias)
+	return arr
+}
+
 // ---
 
 type Layer struct {
@@ -49,11 +58,19 @@ func NewLayer(numberOfInputsPerNeuron int, numberOfNeurons int) *Layer {
 }
 
 func (l *Layer) Call(input []*Value) []*Value {
-	out := []*Value{}
+	out := make([]*Value, 0)
 	for _, neuron := range l.Neurons {
 		out = append(out, neuron.Call(input))
 	}
 	return out
+}
+
+func (l *Layer) GetParameters() []*Value {
+	arr := []*Value{}
+	for _, n := range l.Neurons {
+		arr = append(arr, n.GetParameters()...)
+	}
+	return arr
 }
 
 // ---
@@ -78,4 +95,12 @@ func (m *MLP) Call(x []*Value) []*Value {
 		values = layer.Call(values)
 	}
 	return values
+}
+
+func (m *MLP) GetParameters() []*Value {
+	arr := []*Value{}
+	for _, l := range m.Layers {
+		arr = append(arr, l.GetParameters()...)
+	}
+	return arr
 }

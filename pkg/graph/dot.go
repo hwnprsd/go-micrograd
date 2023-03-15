@@ -18,7 +18,6 @@ type Edge struct {
 }
 
 func Trace(root *engine.Value) (NodeSet, EdgeSet) {
-	log.Println("ROOT", root)
 	nodes, edges := NodeSet{}, EdgeSet{}
 	var build func(val *engine.Value)
 	build = func(val *engine.Value) {
